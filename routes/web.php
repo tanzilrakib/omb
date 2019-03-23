@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/', 'MainController@index')->middleware(['auth.shop'])->name('home');
+Route::get('/', 'MainController@index')->middleware(['auth.shop','billable'])->name('home');
 
 Route::get('/main-script', 'MainController@mainScript')->middleware(['auth.shop'])->name('main-script');
