@@ -1,4 +1,5 @@
-@extends('shopify-app::layouts.default')
+
+@extends('default')
 
 @section('content')
     <h1 class="text-center" style="text-align: center">OMB</h1>
@@ -273,7 +274,15 @@
 @section('scripts')
     @parent
 
-    <script type="text/javascript">
+
+    <script src="https://unpkg.com/@shopify/app-bridge"></script>
+
+
+    <script>
+        
+    </script>
+
+    <!-- <script type="text/javascript">
         // ESDK page and bar title
         window.mainPageTitle = 'Home';
             ShopifyApp.ready(function() {
@@ -281,7 +290,7 @@
                     title: 'Home'
                 })
             });
-    </script>
+    </script> -->
 @endsection
 
 
