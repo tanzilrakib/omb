@@ -42,7 +42,7 @@
             const button1 = Button.create(app, {label: 'Show toast message'});
             const toastOptions = {
               message: 'This is an example Toast Message',
-              duration: 5000,
+              duration: 2000,
             };
             const toastNotice = Toast.create(app, toastOptions);
             button1.subscribe(Button.Action.CLICK, function() {
@@ -53,7 +53,7 @@
             const button2 = Button.create(app, {label: 'Show Toast Error'});
             const toastErrorOptions = {
                 message: 'Error saving',
-                duration: 5000,
+                duration: 2000,
                 isError: true,
             };
             const toastError = Toast.create(app, toastErrorOptions);
