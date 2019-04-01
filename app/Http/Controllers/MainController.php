@@ -52,7 +52,7 @@ class MainController extends Controller
         return view('welcome');
     }
 
-     public function mainScript()
+    public function mainScript()
     {
         //
 
@@ -68,6 +68,14 @@ class MainController extends Controller
         $contents = view('main-script')->with('pageData', $pageData);
         return response($contents)->header('Content-Type', 'application/javascript');
         // return view('welcome');
+    }
+
+    public function plans(){
+        return view('plans');
+    }
+
+    public function viewSettings(){
+         return view('settings');
     }
 
 }

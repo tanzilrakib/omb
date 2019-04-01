@@ -6,6 +6,11 @@
 
         <title>{{ config('shopify-app.app_name') }}</title>
 
+        <!-- Shopify's polaris styles -->
+        <link
+          rel="stylesheet"
+          href="https://sdks.shopifycdn.com/polaris/3.11.0/polaris.min.css"
+        />
         @yield('styles')
     </head>
 
@@ -36,8 +41,19 @@
             var Toast = actions.Toast;
             var Button = actions.Button;
             var ButtonGroup = actions.ButtonGroup;
+            var Loading = actions.Loading;
 
-            const saveButton = Button.create(app, {label: 'Save'});
+            const redirect = Redirect.create(app);
+            const loading = Loading.create(app);
+
+            loading.dispatch(Loading.Action.STOP); 
+
+            const saveButton = Button.create(app, {label: 'Plans'});
+
+            saveButton.subscribe('click', () => {
+                loading.dispatch(Loading.Action.START);
+                app.dispatch(Redirect.toApp({path: '/plans'}));
+            });
 
             const button1 = Button.create(app, {label: 'Show toast message'});
             const toastOptions = {
@@ -46,7 +62,6 @@
             };
             const toastNotice = Toast.create(app, toastOptions);
             button1.subscribe(Button.Action.CLICK, function() {
-                console.log('CLICKED');
                 toastNotice.dispatch(Toast.Action.SHOW);
             });
 
@@ -58,12 +73,10 @@
             };
             const toastError = Toast.create(app, toastErrorOptions);
             button2.subscribe(Button.Action.CLICK, function() {
-                console.log('CLICKED');
                 toastError.dispatch(Toast.Action.SHOW);
             });
 
             const button3 = Button.create(app, {label: 'Open modal'});
-
 
             const moreActions = ButtonGroup.create(app, {
               label: 'More actions',
@@ -71,26 +84,38 @@
             });
 
 
+            const homeButton = Button.create(app, {label: 'Home'});
+            homeButton.subscribe('click', () => {
+                loading.dispatch(Loading.Action.START);
+                redirect.dispatch(Redirect.Action.APP, "/");
+            });
+
+            const settingsButton = Button.create(app, {label: 'Settings'});
+            settingsButton.subscribe('click', () => {
+                loading.dispatch(Loading.Action.START);
+                app.dispatch(Redirect.toApp({path: '/settings'}));
+            });
+
+
          
-            // var breadcrumb = Button.create(app, {label: 'My breadcrumb'});
-            // breadcrumb.subscribe(Button.Action.CLICK, function() {
-            //   app.dispatch(Redirect.toApp({path: '/breadcrumb-link'}));
-            // });
+            var breadcrumb = Button.create(app, {label: 'Settings'});
+            breadcrumb.subscribe(Button.Action.CLICK, function() {
+              app.dispatch(Redirect.toApp({path: '/settings'}));
+            });
 
             var titleBarOptions = {
-              title: 'Home',
+              title: "{{ucwords(Route::currentRouteName())}}",
               buttons: {
                 primary: saveButton,
-                secondary: [moreActions],
+                secondary: [homeButton, settingsButton, moreActions],
               },
               // breadcrumbs: breadcrumb,
             };
 
             var myTitleBar = TitleBar.create(app, titleBarOptions);
 
-
             moreActions.set({
-              label: 'Additional options',
+              label: 'Show Features',
             });
 
         </script>
