@@ -19,4 +19,4 @@ Route::get('/main-script', 'MainController@mainScript')->middleware(['auth.shop'
 
 Route::get('/settings', 'MainController@viewSettings')->middleware(['auth.shop'])->name('settings');
 
-Route::get('/settings', 'LiquidController@getLiquidContents')->middleware(['auth.shop'])->name('get-liquid');
+Route::get('/get-liquid', 'LiquidController@getLiquidContents')->middleware(['auth.shop'])->name('get-liquid');

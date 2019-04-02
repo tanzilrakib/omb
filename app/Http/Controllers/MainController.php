@@ -47,7 +47,7 @@ class MainController extends Controller
         // $params['script_tag']['event']= 'onload';
         // $params['script_tag']['src']= env('APP_URL').'/main-script';
         // $res = $api->rest('POST', '/admin/script_tags.json',$params);
-        //END IF
+        // END IF
 
         return view('welcome');
     }
