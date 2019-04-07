@@ -11,6 +11,7 @@
           rel="stylesheet"
           href="https://sdks.shopifycdn.com/polaris/3.11.0/polaris.min.css"
         />
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-polaris.min.css') }}">
         @yield('styles')
     </head>
 
@@ -29,6 +30,7 @@
           integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
           crossorigin="anonymous"></script>
         <script src="https://unpkg.com/@shopify/app-bridge"></script>
+        <script src="{{ asset('bootstrap-polaris.js') }}"></script>
         <script>
             var AppBridge = window['app-bridge'];
             var createApp = AppBridge.createApp;

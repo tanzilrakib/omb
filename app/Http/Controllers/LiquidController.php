@@ -8,16 +8,12 @@ use ShopifyApp;
 
 class LiquidController extends Controller
 {
-    //
-	// private $api;
+	//
 
 	public function __construct(){
-        // $shop = ShopifyApp::shop();
-        // $this->api = ShopifyApp::shop()->api()->setApiKey(env('SHOPIFY_API_KEY'))->setApiKey(env('SHOPIFY_API_SECRET'));  
     }
 
-
-	public function getLiquidContents($asset_key){
+	public function getLiquidContents($assetKey){
 
 		
         $shop = ShopifyApp::shop();
@@ -27,20 +23,20 @@ class LiquidController extends Controller
 
         $res = $api->rest('GET', '/admin/themes.json', $params);
 		
-		$active_theme_id = $res->body->themes[0]->id;
+		$activeThemeId = $res->body->themes[0]->id;
 
 		// GET ACTIVE THEME ASSETS
-        $res = $api->rest('GET', '/admin/themes/'.$active_theme_id.'/assets.json');
+        $res = $api->rest('GET', '/admin/themes/'.$activeThemeId.'/assets.json');
 
         // GET SPECIFIC ASSET
-        $params['asset[key]']= $asset_key;
-        $params['theme_id']=$active_theme_id;
+        $params['asset[key]']= $assetKey;
+        $params['theme_id']=$activeThemeId;
 
-        $res = $api->rest('GET', '/admin/themes/'.$active_theme_id.'/assets.json', $params);
+        $res = $api->rest('GET', '/admin/themes/'.$activeThemeId.'/assets.json', $params);
 
         return [
         	'content' => $res->body->asset->value,
-        	'id' => $active_theme_id
+        	'id' => $activeThemeId
         ];
 		
 		 
@@ -69,7 +65,7 @@ class LiquidController extends Controller
         $liquid = $this->getLiquidContents('snippets/search-bar.liquid');
 
         $html = $liquid['content'];
-        $active_theme_id = $liquid['id'];
+        $activeThemeId = $liquid['id'];
 
 		$dom = new \DOMDocument();
 		// Ensure UTF-8 is respected by using 'mb_convert_encoding'
@@ -89,7 +85,7 @@ class LiquidController extends Controller
   		$params['asset']['value'] = $html;
 
 		// UPDATE ACTIVE THEME ASSETS
-        $res = $api->rest('PUT', '/admin/themes/'.$active_theme_id.'/assets.json', $params);
+        $res = $api->rest('PUT', '/admin/themes/'.$activeThemeId.'/assets.json', $params);
 
 		echo "<pre>";
 		dd($res->body);
@@ -107,7 +103,7 @@ class LiquidController extends Controller
 		$liquid = $this->getLiquidContents($key);
 
 		$html = $liquid['content'];
-		$active_theme_id = $liquid['id'];
+		$activeThemeId = $liquid['id'];
 
 		$dom = new \DOMDocument();
 		// Ensure UTF-8 is respected by using 'mb_convert_encoding'
@@ -125,11 +121,10 @@ class LiquidController extends Controller
 		$shop = ShopifyApp::shop();
         $api = $shop->api()->setApiKey(env('SHOPIFY_API_KEY'))->setApiKey(env('SHOPIFY_API_SECRET'));
 
-
   		$params['asset']['key'] = $key;
   		$params['asset']['value'] = $dom->saveHTML();
 		// UPDATE ACTIVE THEME ASSETS
-        $res = $api->rest('PUT', '/admin/themes/'.$active_theme_id.'/assets.json', $params);
+        $res = $api->rest('PUT', '/admin/themes/'.$activeThemeId.'/assets.json', $params);
 
 		echo "<pre>";
 		dd($res->body);
