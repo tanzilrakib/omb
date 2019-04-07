@@ -30,7 +30,7 @@
           integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
           crossorigin="anonymous"></script>
         <script src="https://unpkg.com/@shopify/app-bridge"></script>
-        <script src="{{ asset('bootstrap-polaris.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-polaris.js') }}"></script>
         <script>
             var AppBridge = window['app-bridge'];
             var createApp = AppBridge.createApp;
@@ -56,6 +56,7 @@
             const saveButton = Button.create(app, {label: 'Plans'});
 
             saveButton.subscribe('click', () => {
+                $('#app-loader-overlay').css('display','flex');
                 loading.dispatch(Loading.Action.START);
                 app.dispatch(Redirect.toApp({path: '/plans'}));
             });
@@ -91,12 +92,14 @@
 
             const homeButton = Button.create(app, {label: 'Home'});
             homeButton.subscribe('click', () => {
+                $('#app-loader-overlay').css('display','flex');
                 loading.dispatch(Loading.Action.START);
                 redirect.dispatch(Redirect.Action.APP, "/");
             });
 
             const settingsButton = Button.create(app, {label: 'Settings'});
             settingsButton.subscribe('click', () => {
+                $('#app-loader-overlay').css('display','flex');
                 loading.dispatch(Loading.Action.START);
                 app.dispatch(Redirect.toApp({path: '/settings'}));
             });
@@ -129,4 +132,6 @@
 
         @yield('scripts')
     </body>
+
+    @include('partials.loader')
 </html>

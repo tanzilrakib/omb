@@ -25,18 +25,28 @@ class LiquidController extends Controller
 		
 		$activeThemeId = $res->body->themes[0]->id;
 
-		// GET ACTIVE THEME ASSETS
-        $res = $api->rest('GET', '/admin/themes/'.$activeThemeId.'/assets.json');
+		$activeThemeName = $res->body->themes[0]->name;
+
+        // $res = $api->rest('GET', '/admin/themes/'.$activeThemeId.'/assets.json');
 
         // GET SPECIFIC ASSET
         $params['asset[key]']= $assetKey;
         $params['theme_id']=$activeThemeId;
+		if(strtolower($res->body->themes[0]->name) == 'venture'){
+	        $params['asset[key]'] = 'sections/header.liquid';
+		}
 
+		// GET ACTIVE THEME ASSETS
         $res = $api->rest('GET', '/admin/themes/'.$activeThemeId.'/assets.json', $params);
 
+  //       echo "<pre>";
+		// dd($res->body->asset);
+		// echo "</pre>";
+		// die();
         return [
         	'content' => $res->body->asset->value,
-        	'id' => $activeThemeId
+        	'id' => $activeThemeId,
+        	'name' => $activeThemeName
         ];
 		
 		 
@@ -70,7 +80,7 @@ class LiquidController extends Controller
 		$dom = new \DOMDocument();
 		// Ensure UTF-8 is respected by using 'mb_convert_encoding'
 
-		$dom->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+		@$dom->loadHTML($html);
 
 		$btn = $dom->createElement("button");
 		$btn->nodeValue = "S";
@@ -81,8 +91,13 @@ class LiquidController extends Controller
 
 		$html = $this->embedElementInLiquid($dom, $btn, 'button', 'type', 'submit', 'before');
 
+
   		$params['asset']['key']='snippets/search-bar.liquid';
   		$params['asset']['value'] = $html;
+
+		if(strtolower($liquid['name']) == 'venture'){
+	        $params['asset']['key']='sections/header.liquid';
+		}
 
 		// UPDATE ACTIVE THEME ASSETS
         $res = $api->rest('PUT', '/admin/themes/'.$activeThemeId.'/assets.json', $params);

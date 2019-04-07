@@ -29,18 +29,51 @@
         <p>This module is ready to be implemented on a live app.</p>
       </div>
     </div>
+
 @endsection
 
 @section('scripts')
     @parent
 
     <script>
-          $('#alterLiquidBtn').click(function(e){
-              window.location.href = "{{route('alter-liquid')}}";
-          });
-          $('#restoreLiquidBtn').click(function(e){
-              window.location.href = "{{route('restore-searchbar')}}";
-          });
+
+        var liquidToast = {
+          message: 'Liquid file altered successfully',
+          duration: 2000,
+        };
+        var liquidToastNotice = Toast.create(app, liquidToast);
+  
+        $('#alterLiquidBtn').click(function(e){
+          // window.location.href = "{{route('alter-liquid')}}";
+            $('#app-loader-overlay').css('display','flex');
+            $.ajax({
+                type: "GET",
+                url: "{{route('alter-liquid')}}",
+                success: function(res){
+                    console.log(res);
+                    $('#app-loader-overlay').hide();
+                    liquidToastNotice.dispatch(Toast.Action.SHOW);
+                }
+            });
+        });
+
+        $('#restoreLiquidBtn').click(function(e){
+            $('#app-loader-overlay').css('display','flex');
+            $.ajax({
+                type: "GET",
+                url: "{{route('restore-searchbar')}}",
+                success: function(res){
+                    console.log(res);
+                    liquidToast = {
+                      message: 'Liquid file restored successfully',
+                      duration: 2000,
+                    };
+                    liquidToastNotice = Toast.create(app, liquidToast);
+                    $('#app-loader-overlay').hide();
+                    liquidToastNotice.dispatch(Toast.Action.SHOW);
+                }
+            });
+        });
     </script>
 
     <!-- <script type="text/javascript">

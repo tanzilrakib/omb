@@ -19,6 +19,6 @@ Route::get('/main-script', 'MainController@mainScript')->middleware(['auth.shop'
 
 Route::get('/settings', 'MainController@viewSettings')->middleware(['auth.shop'])->name('settings');
 
-Route::get('/get-liquid', 'LiquidController@getLiquidContents')->middleware(['auth.shop'])->name('get-liquid');
-Route::get('/alter-liquid', 'LiquidController@alterLiquidContents')->middleware(['auth.shop'])->name('alter-liquid');
-Route::get('/restore-searchbar', 'LiquidController@restoreOriginalSearchBar')->middleware(['auth.shop'])->name('restore-searchbar');
+Route::get('/get-liquid', 'LiquidController@getLiquidContents')->middleware(['auth.shop','cors'])->name('get-liquid');
+Route::get('/alter-liquid', 'LiquidController@alterLiquidContents')->middleware(['auth.shop','cors'])->name('alter-liquid');
+Route::get('/restore-searchbar', 'LiquidController@restoreOriginalSearchBar')->middleware(['auth.shop','cors'])->name('restore-searchbar');
